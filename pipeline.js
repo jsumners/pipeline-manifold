@@ -37,7 +37,7 @@ inputStdin.pipe(process.stdout)
 
 const topLevelPipes = []
 function addPipe (parent, pipe) {
-  const proc = spawn(pipe.bin, pipe.args)
+  const proc = spawn(pipe.bin, pipe.args || [])
   parent.pipe(proc.stdin)
   parent.pipelineChild = proc
 
