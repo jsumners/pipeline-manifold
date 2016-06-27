@@ -16,6 +16,7 @@ suite('command output as input', function () {
 
     pipeline.stdout.on('close', () => {
       expect(fs.readFileSync('/tmp/pipeline-manifold.tail.test').toString()).to.equal('line 1\nline 2\n')
+      fs.unlinkSync('/tmp/pipeline-manifold.tail.test')
       done()
     })
   })

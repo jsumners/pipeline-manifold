@@ -1,0 +1,12 @@
+{
+  "pipes": [
+    {
+      "bin": "/usr/bin/env",
+      "args": ["node", "./test/fixtures/echo.js"],
+      "pipes": [{
+        "bin": "/usr/bin/tee",
+        "args": ["/tmp/pipeline-manifold.grandchild.test"]
+      }]
+    }
+  ]
+}

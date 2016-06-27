@@ -25,26 +25,32 @@ try {
   process.exit(2)
 }
 
-let tail
-let input
+let inputProgram
+let inputStdin
 if (!config.input || config.input === 'stdin') {
-  input = process.stdin
+  inputStdin = process.stdin
 } else {
-  tail = spawn(config.input.bin, config.input.args)
-  input = tail.stdout
+  inputProgram = spawn(config.input.bin, config.input.args)
+  inputStdin = inputProgram.stdout
 }
-input.pipe(process.stdout)
+inputStdin.pipe(process.stdout)
 
-const outputs = []
-config.outputs.forEach((output) => {
-  const proc = spawn(output.bin, output.args)
-  input.pipe(proc.stdin)
-  outputs.push(proc)
-})
+const topLevelPipes = []
+function addPipe (parent, pipe) {
+  const proc = spawn(pipe.bin, pipe.args || [])
+  parent.pipe(proc.stdin)
+  parent.pipelineChild = proc
+
+  if (pipe.pipes) pipe.pipes.forEach((p) => { addPipe(proc.stdout, p) })
+
+  return proc
+}
+
+config.pipes.forEach((pipe) => { topLevelPipes.push(addPipe(inputStdin, pipe)) })
 
 function shutdown () {
-  if (tail) tail.kill()
-  outputs.forEach((o) => { o.kill() })
+  if (inputProgram) inputProgram.kill()
+  topLevelPipes.forEach((o) => { o.kill() })
 }
 
 process.on('SIGINT', shutdown)
