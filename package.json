@@ -1,0 +1,46 @@
+{
+  "name": "pipeline-manifold",
+  "version": "1.0.0",
+  "description": "Pipe one stdout to many stdin",
+  "homepage": "https://github.com/jsumners/pipeline-manifold",
+  "main": "pipeline.js",
+  "scripts": {
+    "test": "gulp test",
+    "lint": "gulp lint"
+  },
+  "bin": {
+    "pipeline-manifold": "./app.js"
+  },
+  "keywords": [
+    "pipes",
+    "cli",
+    "stdout",
+    "stdin"
+  ],
+  "author": "James Sumners <james.sumners@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsumners/pipeline-manifold.git"
+  },
+  "bugs": "https://github.com/jsumners/pipeline-manifold/issues",
+  "precommit": [
+    "lint",
+    "test"
+  ],
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-istanbul": "^1.0.0",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-mocha": "^2.2.0",
+    "gulp-standard": "^7.0.1",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3",
+    "pre-commit": "^1.1.3",
+    "standard": "^7.1.2"
+  },
+  "dependencies": {
+    "nopt": "^3.0.6"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "input": {
+    "bin": "/usr/bin/tail",
+    "args": ["./test/fixtures/logfile.log"]
+  },
+  "outputs": [
+    { "bin": "/usr/bin/tee", "args": ["/tmp/pipeline-manifold.tail.test"] }
+  ]
+}
