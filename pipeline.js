@@ -36,17 +36,17 @@ if (!config.input || config.input === 'stdin') {
 inputStdin.pipe(process.stdout)
 
 const topLevelPipes = []
-config.pipes.forEach((pipe) => {
+function addPipe (parent, pipe) {
   const proc = spawn(pipe.bin, pipe.args)
-  inputStdin.pipe(proc.stdin)
-  topLevelPipes.push(proc)
+  parent.pipe(proc.stdin)
+  parent.pipelineChild = proc
 
-  if (pipe.pipe) {
-    const child = spawn(pipe.pipe.bin, pipe.pipe.args)
-    proc.stdout.pipe(child.stdin)
-    proc.grandchild = child
-  }
-})
+  if (pipe.pipes) pipe.pipes.forEach((p) => { addPipe(proc.stdout, p) })
+
+  return proc
+}
+
+config.pipes.forEach((pipe) => { topLevelPipes.push(addPipe(inputStdin, pipe)) })
 
 function shutdown () {
   if (inputProgram) inputProgram.kill()
