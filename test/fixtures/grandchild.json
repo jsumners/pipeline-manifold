@@ -1,6 +1,5 @@
 {
-
-  "outputs": [
+  "pipes": [
     {
       "bin": "/usr/bin/env",
       "args": ["node", "./test/fixtures/echo.js"],

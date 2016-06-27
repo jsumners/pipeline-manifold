@@ -36,13 +36,13 @@ if (!config.input || config.input === 'stdin') {
 inputStdin.pipe(process.stdout)
 
 const topLevelPipes = []
-config.outputs.forEach((output) => {
-  const proc = spawn(output.bin, output.args)
+config.pipes.forEach((pipe) => {
+  const proc = spawn(pipe.bin, pipe.args)
   inputStdin.pipe(proc.stdin)
   topLevelPipes.push(proc)
 
-  if (output.pipe) {
-    const child = spawn(output.pipe.bin, output.pipe.args)
+  if (pipe.pipe) {
+    const child = spawn(pipe.pipe.bin, pipe.pipe.args)
     proc.stdout.pipe(child.stdin)
     proc.grandchild = child
   }

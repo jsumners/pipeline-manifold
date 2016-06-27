@@ -1,5 +1,5 @@
 {
-  "outputs": [
+  "pipes": [
     { "bin": "/usr/bin/tee", "args": ["/tmp/pipeline-manifold.stdin.test"] }
   ]
 }

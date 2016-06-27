@@ -12,6 +12,7 @@ suite('child pipes', function () {
 
     pipeline.stdout.on('close', () => {
       expect(fs.readFileSync('/tmp/pipeline-manifold.grandchild.test').toString()).to.equal('echo - hello')
+      fs.unlinkSync('/tmp/pipeline-manifold.grandchild.test')
       done()
     })
 

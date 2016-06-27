@@ -13,7 +13,7 @@ Where `example.json` is:
 
 ```json
 {
-  "outputs": [
+  "pipes": [
     { "bin": "/usr/bin/tee", "args": ["/tmp/out.1"] },
     { "bin": "/usr/bin/tee", "args": ["/tmp/out.2"] }
   ]
@@ -34,7 +34,7 @@ Where `example.json` is:
     "bin": "/usr/bin/tail",
     "args": ["-n", "0", "-F", "/var/log/system.log"]
   },
-  "outputs": [
+  "pipes": [
     { "bin": "/usr/bin/tee", "args": ["/tmp/out.1"] },
     { "bin": "/usr/bin/tee", "args": ["/tmp/out.2"] }
   ]
@@ -58,10 +58,10 @@ properties:
 + `input` {object} (optional): this property defines a program to run and use its `stdout` as the input.
   + `bin` {string} (required): the input program to run (full path if not present in the environment).
   + `args` {array<string>} (required): the parameters to pass to the input program, one parameter per array element.
-+ `outputs` {array<object>} (required): this property defines the outputs to whose `stdin`s the input program's `stdout`
++ `pipes` {array<object>} (required): this property defines the outputs to whose `stdin`s the input program's `stdout`
   will be written. Each object in the array has the same format as the `input` program object, i.e. `bin` and `args`.
   An extra `pipe` property may be added that also matches an `input` object. This `pipe` object will have its `stdin`
-  fed from the `output`'s `stdout`.
+  fed from the `pipes`'s `stdout`.
 
 ## License
 

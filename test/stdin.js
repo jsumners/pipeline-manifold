@@ -14,6 +14,7 @@ suite('process.stdin as input', function () {
 
     pipeline.on('close', () => {
       expect(fs.readFileSync('/tmp/pipeline-manifold.stdin.test').toString()).to.equal('hello')
+      fs.unlinkSync('/tmp/pipeline-manifold.stdin.test')
       done()
     })
   })
