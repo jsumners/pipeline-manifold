@@ -1,0 +1,9 @@
+{
+  "input": {
+    "bin": "/usr/bin/tail",
+    "args": ["/var/log/system.log"]
+  },
+  "outputs": [
+    { "bin": "/usr/bin/env", "args": ["node"] }
+  ]
+}
