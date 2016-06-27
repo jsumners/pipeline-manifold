@@ -60,6 +60,8 @@ properties:
   + `args` {array<string>} (required): the parameters to pass to the input program, one parameter per array element.
 + `outputs` {array<object>} (required): this property defines the outputs to whose `stdin`s the input program's `stdout`
   will be written. Each object in the array has the same format as the `input` program object, i.e. `bin` and `args`.
+  An extra `pipe` property may be added that also matches an `input` object. This `pipe` object will have its `stdin`
+  fed from the `output`'s `stdout`.
 
 ## License
 

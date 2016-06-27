@@ -40,6 +40,12 @@ config.outputs.forEach((output) => {
   const proc = spawn(output.bin, output.args)
   input.pipe(proc.stdin)
   outputs.push(proc)
+
+  if (output.pipe) {
+    const child = spawn(output.pipe.bin, output.pipe.args)
+    proc.stdout.pipe(child.stdin)
+    proc.grandchild = child
+  }
 })
 
 function shutdown () {
