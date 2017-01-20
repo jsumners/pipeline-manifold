@@ -12,7 +12,7 @@ suite('process.stdin as input', function () {
 
     pipeline.stdin.end('hello')
 
-    pipeline.on('close', () => {
+    pipeline.on('exit', () => {
       expect(fs.readFileSync('/tmp/pipeline-manifold.stdin.test').toString()).to.equal('hello')
       fs.unlinkSync('/tmp/pipeline-manifold.stdin.test')
       done()

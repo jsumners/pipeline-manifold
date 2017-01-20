@@ -1,7 +1,8 @@
 'use strict'
 
 const path = require('path')
-const spawn = require('child_process').spawn
+const debug = require('debug')('pipeline-manifold:main')
+const ProcessManager = require(path.join(__dirname, 'lib', 'ProcessManager.js'))
 
 const nopt = require('nopt')
 const longOpts = {
@@ -25,32 +26,27 @@ try {
   process.exit(2)
 }
 
-let inputProgram
-let inputStdin
-if (!config.input || config.input === 'stdin') {
-  inputStdin = process.stdin
-} else {
-  inputProgram = spawn(config.input.bin, config.input.args)
-  inputStdin = inputProgram.stdout
-}
-inputStdin.pipe(process.stdout)
+const processManager = new ProcessManager()
 
-const topLevelPipes = []
 function addPipe (parent, pipe) {
-  const proc = spawn(pipe.bin, pipe.args || [])
-  parent.pipe(proc.stdin)
-  parent.pipelineChild = proc
-
-  if (pipe.pipes) pipe.pipes.forEach((p) => { addPipe(proc.stdout, p) })
-
-  return proc
+  debug('adding pipe (%j) to parent (%s)', pipe, parent.pid)
+  const proc = processManager.spawnChild(parent, pipe.bin, pipe.args || [])
+  if (pipe.pipes) pipe.pipes.forEach((p) => { addPipe(proc, p) })
 }
 
-config.pipes.forEach((pipe) => { topLevelPipes.push(addPipe(inputStdin, pipe)) })
+if (!config.input || config.input === 'stdin') {
+  processManager.addMaster(process)
+} else {
+  processManager.spawnMaster(config.input.bin, config.input.args || [])
+}
+
+config.pipes.forEach((pipe) => {
+  addPipe(processManager.process, pipe)
+})
 
 function shutdown () {
-  if (inputProgram) inputProgram.kill()
-  topLevelPipes.forEach((o) => { o.kill() })
+  debug('shutting down master process: %s', processManager.master.pid)
+  processManager.shutdown()
 }
 
 process.on('SIGINT', shutdown)

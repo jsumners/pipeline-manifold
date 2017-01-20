@@ -41,6 +41,7 @@
     "standard": "^7.1.2"
   },
   "dependencies": {
+    "debug": "^2.2.0",
     "nopt": "^3.0.6"
   }
 }
